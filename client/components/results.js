@@ -2,11 +2,21 @@ import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import htm from "htm";
 import { downloadTextFile, openWindow } from "../utils.js";
-import { getModelLabel } from "./options.js";
+import { getInferenceCost, getModelLabel } from "./options.js";
 
 const html = htm.bind(h);
 
-export default function Results({ workspace }) {
+export default function Results({ selectedWorkspace, workspaces, setWorkspaces }) {
+  const workspace = workspaces[selectedWorkspace];
+  
+  function removeWorkspaceResult(workspaceIndex, resultIndex) {
+    setWorkspaces((workspaces) => {
+      let clone = [...workspaces];
+      clone[workspaceIndex].results.splice(resultIndex, 1);
+      return clone
+    });
+  }
+
   return html`
     <div class="mb-3">
       <h2 class="h3 mb-3">${workspace.title}</h2>
@@ -31,9 +41,9 @@ export default function Results({ workspace }) {
                   <td>${result?.document} <small>${result?.id}</small></td>
                   <td>${getModelLabel(result?.modelId)}</td>
                   <td>${result?.status}${result?.error && html`<small class="ms-1">(${result?.error})</small>`}</td>
-                  <td>${result?.results?.usage?.totalTokens && `${Math.round(result.duration / 1000)}k`}</td>
-                  <td>N/A</td>
-                  <td>${result?.duration && `${Math.round(result.duration / 1000)}s`}</td>
+                  <td>${result?.results?.usage?.totalTokens && `${(result?.results?.usage?.totalTokens / 1000).toFixed(2)}k`}</td>
+                  <td>${result?.results?.usage ? getInferenceCost(result?.modelId, result?.results?.usage?.inputTokens / 1000, result?.results?.usage?.outputTokens / 1000).toPrecision(4) : 'N/A'}</td>
+                  <td>${result?.duration && `${(result.duration / 1000).toFixed(2)}s`}</td>
                   <td>
                     ${result?.status === "Succeeded" &&
                     html`
@@ -53,11 +63,12 @@ export default function Results({ workspace }) {
                         View Results
                       </button>
                       <button
-                        class="btn btn-sm btn-outline-primary"
+                        class="btn btn-sm btn-outline-primary me-1"
                         onClick=${(ev) => openWindow(result?.document, result?.prompt + "\n" + result?.text)}>
                         View Prompt
                       </button>
                     `}
+                    <button class="btn btn-sm btn-outline-danger me-1" onClick=${() => confirm("Please confirm you wish to remove this entry") && removeWorkspaceResult(selectedWorkspace, index)}>Delete</button>
                   </td>
                 </tr>
               `
