@@ -37,10 +37,7 @@ export default function Workspaces({ workspaces, setWorkspaces, selectedWorkspac
     setWorkspaces((workspaces) => {
       const clone = structuredClone(workspaces);
       for (const result of results) {
-        console.log("result", result, clone[workspaceIndex].results);
-        // const existingResult = clone[workspaceIndex].results.find((r) => r.id === result.id);
         const resultIndex = clone[workspaceIndex].results.findIndex((r) => r.id === result.id);
-        console.log("resultIndex", resultIndex);
         if (resultIndex !== -1) {
           clone[workspaceIndex].results[resultIndex] = result;
         } else {

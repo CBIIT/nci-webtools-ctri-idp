@@ -10,7 +10,6 @@ import { parseDocument } from "./parsers.js";
 export async function runModel(modelId, messages) {
   const client = new BedrockRuntimeClient();
   const input = { modelId, messages };
-  console.log(input)
   const command = new ConverseCommand(input);
   const response = await client.send(command);
   return response;
@@ -28,24 +27,23 @@ export async function processDocument(modelId, prompt, document) {
   try {
     const text = await parseDocument(document.buffer, document.mimetype);
     const userMessage = prompt + "\n" + text;
-    const messages = [{ role: "user", content: [{text: userMessage}] }];
-    console.log(userMessage);
+    const messages = [{ role: "user", content: [{ text: userMessage }] }];
     const results = await runModel(modelId, messages);
     const endTime = Date.now();
     const duration = endTime - startTime;
     return { document: document.originalname, modelId, prompt, text, results, startTime, endTime, duration };
   } catch (error) {
-    console.log(error)
+    console.error(error);
     return { document: document.originalname, modelId, prompt, error: error.message, startTime };
   }
 }
 
 /**
  * Run a model with the given prompt and documents.
- * @param {string} modelId 
- * @param {string} prompt 
- * @param {{originalname: string, buffer: Buffer, mimetype: string}[]} documents 
- * @returns {Promise<any[]>} 
+ * @param {string} modelId
+ * @param {string} prompt
+ * @param {{originalname: string, buffer: Buffer, mimetype: string}[]} documents
+ * @returns {Promise<any[]>}
  */
 export async function processDocuments(modelId, prompt, documents) {
   return await Promise.all(documents.map(async (document) => await processDocument(modelId, prompt, document)));

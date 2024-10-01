@@ -191,7 +191,6 @@ export class EcsServiceStack extends Stack {
     });
 
     const cfnLoadBalancer = service.loadBalancer.node.defaultChild as elbv2.CfnLoadBalancer;
-    console.log({subnets: props.subnets})
     cfnLoadBalancer.addOverride("Properties.Subnets", props.subnets)
 
 

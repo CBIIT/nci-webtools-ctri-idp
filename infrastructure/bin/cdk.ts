@@ -18,7 +18,7 @@ for (const key in config.tags) {
   Tags.of(app).add(key, config.tags[key]);
 }
 
-console.log('config', config);
+// console.log('config', config);
 
 new EcrRepositoryStack(app, `${prefix}-ecr-repository`, { env, ...config.ecr });
 new EcsServiceStack(app, `${prefix}-ecs-service`, { env, ...config.ecs });
