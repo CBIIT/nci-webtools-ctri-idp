@@ -8,7 +8,7 @@ npm install
 cdk deploy ctri-idp-$TIER-route53-hosted-zone --require-approval never
 cdk deploy ctri-idp-$TIER-ecr-repository --require-approval never
 
-export ECR_REGISTRY=${AWS_ACCCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+export ECR_REGISTRY=${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
 export ECR_REPOSITORY=ctri-idp-$TIER
 
 export CLIENT_IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:client-$GITHUB_SHA
