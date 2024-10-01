@@ -41,8 +41,8 @@ const config: Config = {
       cpu: 512,
       containers: [
         {
-          image: process.env.FRONTEND_IMAGE || "httpd" || `${account}.dkr.ecr.us-east-1.amazonaws.com/${prefix}:frontend-latest`,
-          name: "frontend",
+          image: process.env.CLIENT_IMAGE || `${account}.dkr.ecr.us-east-1.amazonaws.com/${prefix}:client-latest`,
+          name: "client",
           portMappings: [
             {
               containerPort: 80,
@@ -53,7 +53,16 @@ const config: Config = {
             PROXY: "http://localhost:8080",
           }
         },
+        {
+          image: process.env.SERVER_IMAGE || "httpd" || `${account}.dkr.ecr.us-east-1.amazonaws.com/${prefix}:server-latest`,
+          name: "backend",
+          environment: {
+            PORT: "8080"
+          }
+        },
       ],
+
+
       volumes: [
         
       ]
