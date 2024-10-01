@@ -26,7 +26,7 @@ jobs:
       contents: "read"
       id-token: "write"
     runs-on: ubuntu-latest
-    environment: ${{ (endsWith(github.ref, 'develop') && 'develop') || inputs.environment || 'default' }}
+    environment: ${{ (endsWith(github.ref, 'dev') && 'dev') || (endsWith(github.ref, 'qa') && 'qa') || inputs.environment || 'dev' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,4 +38,5 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
       - run: npm install -g aws-cdk
+      - run: echo "${{ secrets.ENV_FILE }}" > infrastructure/.env
       - run: bash deploy.sh
