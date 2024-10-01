@@ -111,6 +111,10 @@ export class EcsServiceStack extends Stack {
       iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonElasticFileSystemClientFullAccess")
     );
 
+    taskRole.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonBedrockFullAccess")
+    )
+
     const logGroup = new logs.LogGroup(this, "log-group", {
       logGroupName: prefix,
       retention: logs.RetentionDays.ONE_MONTH,
