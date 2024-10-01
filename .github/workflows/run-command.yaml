@@ -1,4 +1,4 @@
-name: Deploy
+name: Run Command
 on:
   workflow_dispatch:
     inputs:
