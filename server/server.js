@@ -1,6 +1,6 @@
 import express from "express";
 import api from "./services/api.js";
-const { PORT = 9000, CLIENT_FOLDER = "../client" } = process.env;
+const { PORT = 8080, CLIENT_FOLDER = "../client" } = process.env;
 const app = express();
 
 app.use(express.static(CLIENT_FOLDER));
