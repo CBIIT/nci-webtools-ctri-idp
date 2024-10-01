@@ -14,11 +14,7 @@ on:
 
 env:
   TZ: America/New_York
-  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-  STACK_NAME: ${{ secrets.STACK_NAME }}
   ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
 
 jobs:
