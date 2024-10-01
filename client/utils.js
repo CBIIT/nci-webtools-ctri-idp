@@ -1,5 +1,5 @@
 export function loadFromStorage(key) {
-  localStorage.removeItem(key);
+  // localStorage.removeItem(key);
   const localStorageItem = localStorage.getItem(key);
   if (localStorageItem) {
     try {
