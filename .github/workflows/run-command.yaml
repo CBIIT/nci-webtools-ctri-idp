@@ -16,7 +16,7 @@ env:
   TZ: America/New_York
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+  TIER: ${{ secrets.TIER }}
 
 jobs:
   RunCommand:
