@@ -27,7 +27,7 @@ export default function App() {
       </div>
 
       <div class="col-md-9">
-        <${Results} workspace=${workspaces[selectedWorkspace]} />
+        <${Results} selectedWorkspace=${selectedWorkspace} workspaces=${workspaces} setWorkspaces=${setWorkspaces} />
       </div>
     </div>
   `;
