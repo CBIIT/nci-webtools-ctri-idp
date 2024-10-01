@@ -1,6 +1,16 @@
 #!/bin/bash
 set -ex
 
+pushd infrastructure
+npm install
+
+# todo: remove hosted zone
+cdk deploy ctri-idp-$TIER-route53-hosted-zone --require-approval never
+cdk deploy ctri-idp-$TIER-ecr-repository --require-approval never
+
+export ECR_REGISTRY=${AWS_ACCCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+export ECR_REPOSITORY=ctri-idp-$TIER
+
 export CLIENT_IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:client-$GITHUB_SHA
 export SERVER_IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:server-$GITHUB_SHA
 
@@ -17,6 +27,4 @@ docker build -t $SERVER_IMAGE -t $SERVER_IMAGE_LATEST -f server/Dockerfile .
 docker push $SERVER_IMAGE 
 docker push $SERVER_IMAGE_LATEST
 
-pushd cdk
-npm install
-cdk deploy $STACK_NAME --require-approval never
+cdk deploy ctri-idp-$TIER-ecs-service --require-approval never
