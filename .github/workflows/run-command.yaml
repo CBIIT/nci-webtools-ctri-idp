@@ -14,6 +14,7 @@ on:
 
 env:
   TZ: America/New_York
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
   ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
 
@@ -35,4 +36,5 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
       - run: npm install -g aws-cdk
+      - run: echo "${{ secrets.ENV_FILE }}" > infrastructure/.env
       - run: ${{ inputs.command }}
