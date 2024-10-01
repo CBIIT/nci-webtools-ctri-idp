@@ -1,0 +1,51 @@
+# docker pull chromadb/chroma 
+# docker run -p 8000:8000 chromadb/chroma 
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+    env_file:
+      - ./server/.env
+    develop:
+      watch:
+      - action: sync+restart
+        path: ./server
+        target: /server
+        ignore:
+          - ./server/node_modules
+      - action: rebuild
+        path: server/package.json
+        ignore:
+          - ./server/node_modules
+        
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    ports:
+      - "9000:9000"
+    environment:
+      - PORT=9000
+      - PROXY=http://server:8080
+    develop:
+      watch:
+      - action: sync
+        path: ./client
+        target: /client
+        
+  postgres:
+    image: pgvector/pgvector:pg16 
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
