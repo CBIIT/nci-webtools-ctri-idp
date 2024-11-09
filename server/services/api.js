@@ -21,19 +21,14 @@ api.post("/submit", upload.any(), async (req, res) => {
   res.json(mappedResults);
 });
 
-api.post("/model/converse", async (req, res) => {
-  const { model, messages } = req.body;
+api.get("/model/run", async (req, res) => {
+  const { model, messages } = req.query;
   res.json(await runModel(model, messages));
 });
 
-api.get("/model/run", async (req, res) => {
-  const { model, message } = req.query;
-  res.json(await runModel(model, message));
-});
-
 api.post("/model/run", async (req, res) => {
-  const { model, message } = req.body;
-  res.json(await runModel(model, message));
+  const { model, messages } = req.body;
+  res.json(await runModel(model, messages));
 });
 
 export default api;
